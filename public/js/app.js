@@ -1,5 +1,6 @@
 var url = window.location.href;
 var swLocation = '/twittor/sw.js';
+var swReg;
 
 
 if (navigator.serviceWorker) {
@@ -9,8 +10,14 @@ if (navigator.serviceWorker) {
         swLocation = '/sw.js';
     }
 
+    window.addEventListener('load', function () {
+        navigator.serviceWorker.register(swLocation).then(function (reg) {
+            swReg = reg;
+            swReg.pushManager.getSubscription().then(verificarSuscripcion);
+        })
+    })
 
-    navigator.serviceWorker.register(swLocation);
+
 }
 
 
@@ -212,6 +219,7 @@ isOnline();
 // Notificaciones
 
 function verificarSuscripcion(activadas) {
+    console.log(activadas);
     if (activadas) {
         btnActivadas.removeClass('oculto');
         btnDesactivadas.addClass('oculto');
@@ -221,7 +229,7 @@ function verificarSuscripcion(activadas) {
     }
 }
 
-verificarSuscripcion();
+// verificarSuscripcion();
 
 function enviarNotificacion() {
     const notificationOpts = {
@@ -256,3 +264,49 @@ function notificar() {
 }
 
 // notificar();
+
+// Get Key
+function getPublicKey() {
+    // fetch('api/key')
+    //     .then(res => res.text())
+    //     .then(console.log)
+
+    return fetch('api/key')
+        .then(res => res.arrayBuffer())
+        // retornar arreglo, pero como un UnitBarray
+        .then(key => new Uint8Array(key));
+}
+
+// getPublicKey().then(console.log);
+
+btnDesactivadas.on('click', function () {
+    if (!swReg) return console.log(`No hay registro de SW`);
+
+    getPublicKey().then(function (key) {
+        swReg.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: key
+        }).then(res => res.toJSON())
+            .then(suscripcion => {
+                // console.log(suscripcion);
+                fetch('api/subscribe', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(suscripcion)
+                })
+                    .then(verificarSuscripcion)
+                    .catch(cancelarSuscripcion);
+
+            });
+    });
+});
+
+function cancelarSuscripcion() {
+    swReg.pushManager.getSubscription().then(sub => {
+        sub.unsubscribe().then(() => verificarSuscripcion(false));
+    });
+}
+
+btnActivadas.on('click', function () {
+    cancelarSuscripcion();
+});
