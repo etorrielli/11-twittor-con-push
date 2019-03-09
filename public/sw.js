@@ -134,8 +134,74 @@ self.addEventListener('push', e => {
     // console.log(e);
     // console.log(e.data.text());
 
-    const title = e.data.text();
-    const options = {};
+    const data = JSON.parse(e.data.text());
+    console.log(data);
+
+    const title = data.titulo;
+    const options = {
+        body: data.cuerpo,
+        icon: `img/avatars/${data.usuario}.jpg`,
+        budge: 'img/favicon.ico',
+        image: 'http://datainfox.com/wp-content/uploads/2017/10/avengers-tower.jpg',
+        vibrate: [125, 75, 125, 275, 200, 275, 125, 75, 125, 275, 200, 600, 200, 600],
+        openUrl: '/',
+        data: {
+            url: '/',
+            id: data.usuario
+        },
+        actions: [
+            {
+                action: 'thor-action',
+                title: 'Thor',
+                icon: `img/avatars/thor.jpg`
+            },
+            {
+                action: 'ironman-action',
+                title: 'Ironman',
+                icon: `img/avatars/ironman.jpg`
+            }
+        ]
+    };
     e.waitUntil(self.registration.showNotification(title, options));
+
+});
+
+// escuchar cierre notificacion
+self.addEventListener('notificationclose', e => {
+    console.log(`Notificacion cerrada: ${e}`);
+});
+
+// escuchar click notificacion
+self.addEventListener('notificationclick', e => {
+
+    const notificacion = e.notification;
+    const accion = e.action;
+
+    console.log(notificacion);
+    console.log(accion);
+
+    const respuesta = clients.matchAll()
+        .then(clientes => {
+            console.log(`clientes`);
+            console.log(clientes);
+
+            let cliente = clientes.find(c => {
+                return c.visibilityState === 'visible';
+            });
+
+            console.log(`cliente`);
+            console.log(cliente);
+
+            if (cliente !== undefined) {
+                cliente.navigate(notificacion.data.url);
+                cliente.focus();
+            } else {
+                clients.openWindow(notificacion.data.url);
+            }
+
+            return notificacion.close();
+        });
+
+    e.waitUntil(respuesta);
 
 });

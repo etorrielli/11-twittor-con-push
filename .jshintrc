@@ -75,6 +75,7 @@
         "require"  : true,
         "module"   : true,
         "process"  : true,
-        "$"        : true
+        "$"        : true,
+        "clients"  : true
     }
 }
