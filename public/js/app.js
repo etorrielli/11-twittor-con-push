@@ -271,7 +271,7 @@ function getPublicKey() {
     //     .then(res => res.text())
     //     .then(console.log)
 
-    return fetch('api/key')
+    return fetch('api/key/twittor')
         .then(res => res.arrayBuffer())
         // retornar arreglo, pero como un UnitBarray
         .then(key => new Uint8Array(key));
@@ -288,7 +288,12 @@ btnDesactivadas.on('click', function () {
             applicationServerKey: key
         }).then(res => res.toJSON())
             .then(suscripcion => {
-                // console.log(suscripcion);
+                suscripcion.app = 'twittor';
+                suscripcion.usuario = 'anonimo';
+
+                console.log('suscripcion');
+                console.log(suscripcion);
+
                 fetch('api/subscribe', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},

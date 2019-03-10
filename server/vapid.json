@@ -1,4 +1,12 @@
-{
-  "publicKey": "BH0MJAZndAjZ6qZKuhXb71hNb6P7c26p7gTNTqxnvnN8oPv_UQ71UvnpHMIzbxtbDsSoqF9R1JOY3xpiSS7JfQY",
-  "privateKey": "OryEGwHjA0hs-Y-PVEFxNBtEYORNY27KhRzp0VrMqu0"
-}
+[
+  {
+    "app": "twittor",
+    "publicKey": "BH0MJAZndAjZ6qZKuhXb71hNb6P7c26p7gTNTqxnvnN8oPv_UQ71UvnpHMIzbxtbDsSoqF9R1JOY3xpiSS7JfQY",
+    "privateKey": "OryEGwHjA0hs-Y-PVEFxNBtEYORNY27KhRzp0VrMqu0"
+  },
+  {
+    "app": "ekeepoit",
+    "publicKey": "BM0S3uGsfHf3pAdDeUB7Lz1KNUV-14i14jL_uTUSvb2KVo0V4vQfvtoJf_M1pgUnUbaaT8C9oH2m0RYnXuegjE4",
+    "privateKey": "9b7XNxIB9-jHieFyDcrQy1ggnnFccA059hbqCfjU8y4"
+  }
+]

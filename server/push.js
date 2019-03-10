@@ -3,17 +3,39 @@ const vapid = require('./vapid.json');
 const fs = require('fs');
 const webpush = require('web-push');
 
-webpush.setGCMAPIKey('<Your GCM API Key Here>');
-webpush.setVapidDetails(
-    'mailto:e.torrielli@gmail.com',
-    vapid.publicKey,
-    vapid.privateKey
-);
+function setAppPush(app) {
+
+    console.log(`app: ${app}`);
+
+    const vapidAppList = vapid.filter(item => {
+        if (item.app === app) {
+            return item;
+        }
+    });
+
+    const vapidApp = vapidAppList[0];
+
+    webpush.setVapidDetails(
+        'mailto:e.torrielli@gmail.com',
+        vapidApp.publicKey,
+        vapidApp.privateKey
+    );
+}
+
 
 let suscripciones = require('./subs-db');
 
-module.exports.getKey = () => {
-    return urlSafeBase64.decode(vapid.publicKey);
+module.exports.getKey = (app) => {
+
+    const vapidAppList = vapid.filter(item => {
+        if (item.app === app) {
+            return item;
+        }
+    });
+
+    const vapidApp = vapidAppList[0];
+
+    return urlSafeBase64.decode(vapidApp.publicKey);
 };
 
 module.exports.addSubscription = (suscripcion) => {
@@ -27,6 +49,8 @@ module.exports.sendPush = (post) => {
     console.log(`Mandando pushes`);
 
     const notificacionesEnviadas = [];
+
+    setAppPush(post.app);
 
     suscripciones.forEach((suscripcion, i) => {
 

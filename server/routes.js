@@ -42,6 +42,10 @@ router.post('/', function (req, res) {
 
 // Almacenar la suscripcion
 router.post('/subscribe', function (req, res) {
+
+    console.log(`req`);
+    console.log(req);
+
     const suscripcion = req.body;
 
     push.addSubscription(suscripcion);
@@ -50,8 +54,9 @@ router.post('/subscribe', function (req, res) {
 });
 
 // Almacenar la suscripcion
-router.get('/key', function (req, res) {
-    const key = push.getKey();
+router.get('/key/:app', function (req, res) {
+    const app = req.params.app;
+    const key = push.getKey(app);
     res.send(key);
 });
 
@@ -62,7 +67,8 @@ router.post('/push', function (req, res) {
     const post = {
         titulo: req.body.titulo,
         cuerpo: req.body.cuerpo,
-        usuario: req.body.usuario
+        usuario: req.body.usuario,
+        app: req.body.app
     }
 
     push.sendPush(post);
