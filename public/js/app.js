@@ -36,8 +36,8 @@ var modalAvatar = $('#modal-avatar');
 var avatarBtns = $('.seleccion-avatar');
 var txtMensaje = $('#txtMensaje');
 
-var btnActivadas = $('.btn-noti-activadas');
-var btnDesactivadas = $('.btn-noti-desactivadas');
+var btnActivadas = $('#btn-noti-activadas');
+var btnDesactivadas = $('#btn-noti-desactivadas');
 
 // El usuario, contiene el ID del hÃ©roe seleccionado
 var usuario;
