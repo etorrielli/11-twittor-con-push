@@ -1,12 +1,1 @@
-[
-  {
-    "endpoint": "https://fcm.googleapis.com/fcm/send/dRwudmWtz38:APA91bFcafdOdjwSKsC1dSOHUO1y7qthQpjm6W2pi_3m71eIRI0ntDXYElf1bBfUNRnaun_Rz5WjkPW_eTfJqio1fDidGj9Fm_69-Yp8fGZr1CUBG7zyDYFxAv4zaIeYXx59U7TH9cyB",
-    "expirationTime": null,
-    "keys": {
-      "p256dh": "BCIt3PpbBcTyHdl6Lk0fOM7STVecIKF9-_lN8zL0Fo4YlZjrEeezEbRO-VcUF7i5WgmduzoB4nJmbOlmzejKPDk",
-      "auth": "1M7Xl6FGEmRV_mObFjf5_w"
-    },
-    "app": "twittor",
-    "usuario": "anonimo"
-  }
-]
+[]
