@@ -52,8 +52,16 @@ module.exports.sendPush = (post) => {
 
     setAppPush(post.app);
 
-    suscripciones.forEach((suscripcion, i) => {
 
+    if (usuario != null && usuario != undefined && usuario !== '') {
+        suscripciones = suscripciones.filter(item => {
+            if (item.usuario === usuario) {
+                return item;
+            }
+        });
+    }
+
+    suscripciones.forEach((suscripcion, i) => {
         const pushProm = webpush.sendNotification(suscripcion, JSON.stringify(post))
             .then(console.log(`Notificacion enviada`))
             .catch(err => {
@@ -64,9 +72,9 @@ module.exports.sendPush = (post) => {
                     suscripciones[i].borrar = true;
                 }
             });
-
         notificacionesEnviadas.push(pushProm);
     });
+
 
     Promise.all(notificacionesEnviadas).then(() => {
 
@@ -74,4 +82,5 @@ module.exports.sendPush = (post) => {
         fs.writeFileSync(`${ __dirname }/subs-db.json`, JSON.stringify(suscripciones));
 
     });
-};
+}
+;
