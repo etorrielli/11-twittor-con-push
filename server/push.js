@@ -62,17 +62,34 @@ module.exports.sendPush = (post) => {
     }
 
     suscripciones.forEach((suscripcion, i) => {
-        const pushProm = webpush.sendNotification(suscripcion, JSON.stringify(post))
-            .then(console.log(`Notificacion enviada`))
-            .catch(err => {
 
-                console.log(`Notificacion fallo`);
-                if (err.statusCode === 410) {
-                    // ya no existe
-                    suscripciones[i].borrar = true;
-                }
-            });
-        notificacionesEnviadas.push(pushProm);
+        if (post.usuario != null && post.usuario != undefined && post.usuario !== '' && post.usuario !== 'anonimo') {
+            if (suscripcion.usuario === post.usuario) {
+                const pushProm = webpush.sendNotification(suscripcion, JSON.stringify(post))
+                    .then(console.log(`Notificacion enviada`))
+                    .catch(err => {
+
+                        console.log(`Notificacion fallo`);
+                        if (err.statusCode === 410) {
+                            // ya no existe
+                            suscripciones[i].borrar = true;
+                        }
+                    });
+                notificacionesEnviadas.push(pushProm);
+            }
+        } else {
+            const pushProm = webpush.sendNotification(suscripcion, JSON.stringify(post))
+                .then(console.log(`Notificacion enviada`))
+                .catch(err => {
+
+                    console.log(`Notificacion fallo`);
+                    if (err.statusCode === 410) {
+                        // ya no existe
+                        suscripciones[i].borrar = true;
+                    }
+                });
+            notificacionesEnviadas.push(pushProm);
+        }
     });
 
 
