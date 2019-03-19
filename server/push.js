@@ -54,30 +54,23 @@ module.exports.sendPush = (post) => {
 
 
     if (post.usuario != null && post.usuario != undefined && post.usuario !== '' && post.usuario !== 'anonimo') {
-        suscripciones = suscripciones.filter(item => {
+        const suscripcionesTemp = suscripciones.filter(item => {
             if (item.usuario === post.usuario) {
                 return item;
             }
         });
-    }
 
-    suscripciones.forEach((suscripcion, i) => {
+        suscripcionesTemp.forEach((suscripcion, i) => {
+            const pushProm = webpush.sendNotification(suscripcion, JSON.stringify(post))
+                .then(console.log(`Notificacion enviada`))
+                .catch(err => {
 
-        if (post.usuario != null && post.usuario != undefined && post.usuario !== '' && post.usuario !== 'anonimo') {
-            if (suscripcion.usuario === post.usuario) {
-                const pushProm = webpush.sendNotification(suscripcion, JSON.stringify(post))
-                    .then(console.log(`Notificacion enviada`))
-                    .catch(err => {
-
-                        console.log(`Notificacion fallo`);
-                        if (err.statusCode === 410) {
-                            // ya no existe
-                            suscripciones[i].borrar = true;
-                        }
-                    });
-                notificacionesEnviadas.push(pushProm);
-            }
-        } else {
+                    console.log(`Notificacion fallo`);
+                });
+            notificacionesEnviadas.push(pushProm);
+        });
+    } else {
+        suscripciones.forEach((suscripcion, i) => {
             const pushProm = webpush.sendNotification(suscripcion, JSON.stringify(post))
                 .then(console.log(`Notificacion enviada`))
                 .catch(err => {
@@ -89,9 +82,8 @@ module.exports.sendPush = (post) => {
                     }
                 });
             notificacionesEnviadas.push(pushProm);
-        }
-    });
-
+        });
+    }
 
     Promise.all(notificacionesEnviadas).then(() => {
 
