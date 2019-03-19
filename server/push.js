@@ -43,13 +43,15 @@ module.exports.addSubscription = (suscripcion) => {
     let exist = false;
 
     // check si ya esta registrada la suscripcion para el usuario
-    suscripciones.forEach((item) => {
-        if(item.app === suscripcion.app && item.usuario === suscripcion.usuario && item.keys.auth === suscripcion.keys.auth){
-            exist = true;
-        }
-    });
+    if (typeof suscripciones !== 'undefined' && suscripciones.length > 0) {
+        suscripciones.forEach((item) => {
+            if (item.app === suscripcion.app && item.usuario === suscripcion.usuario && item.keys.auth === suscripcion.keys.auth) {
+                exist = true;
+            }
+        });
+    }
 
-    if(!exist){
+    if (!exist) {
         suscripciones.push(suscripcion);
         fs.writeFileSync(`${ __dirname }/subs-db.json`, JSON.stringify(suscripciones));
     }
