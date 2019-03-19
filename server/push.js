@@ -53,9 +53,9 @@ module.exports.sendPush = (post) => {
     setAppPush(post.app);
 
 
-    if (usuario != null && usuario != undefined && usuario !== '' && usuario !== 'anonimo') {
+    if (post.usuario != null && post.usuario != undefined && post.usuario !== '' && post.usuario !== 'anonimo') {
         suscripciones = suscripciones.filter(item => {
-            if (item.usuario === usuario) {
+            if (item.usuario === post.usuario) {
                 return item;
             }
         });
