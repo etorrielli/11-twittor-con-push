@@ -39,8 +39,15 @@ module.exports.getKey = (app) => {
 };
 
 module.exports.addSubscription = (suscripcion) => {
-    suscripciones.push(suscripcion);
 
+    // check si ya esta registrada la suscripcion para el usuario
+    suscripciones.forEach((item) => {
+        if(item.app === suscripcion.app && item.usuario === suscripcion.usuario){
+            return;
+        }
+    });
+
+    suscripciones.push(suscripcion);
     fs.writeFileSync(`${ __dirname }/subs-db.json`, JSON.stringify(suscripciones));
 };
 
