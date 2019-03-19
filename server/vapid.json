@@ -8,5 +8,10 @@
     "app": "ekeepoit",
     "publicKey": "BM0S3uGsfHf3pAdDeUB7Lz1KNUV-14i14jL_uTUSvb2KVo0V4vQfvtoJf_M1pgUnUbaaT8C9oH2m0RYnXuegjE4",
     "privateKey": "9b7XNxIB9-jHieFyDcrQy1ggnnFccA059hbqCfjU8y4"
+  },
+  {
+    "app": "eschool",
+    "publicKey": "BPtIAgWr9l7j4H47uQR1JQxQYtqRXo2bbiKZoMAni6v3hJ9Ig6UlzIWvE_DTHjjF8vUJVVNb-AEUzhdhoLK3uIk",
+    "privateKey": "WkWPkTE2TO6bggfypZGjOziANzW0srfv1GPE-FECiBg"
   }
 ]
