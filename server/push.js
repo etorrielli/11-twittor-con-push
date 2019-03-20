@@ -83,6 +83,7 @@ module.exports.sendPush = (post) => {
             notificacionesEnviadas.push(pushProm);
         });
     } else {
+        // falta controlar de enviar una sola notif al dispositivo, por mas que tenga mas de una suscripcion para el mismo
         suscripciones.forEach((suscripcion, i) => {
             const pushProm = webpush.sendNotification(suscripcion, JSON.stringify(post))
                 .then(console.log(`Notificacion enviada`))
