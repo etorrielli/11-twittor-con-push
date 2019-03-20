@@ -83,7 +83,11 @@ module.exports.sendPush = (post) => {
             // notificacionesEnviadas.push(pushProm);
         });
     } else {
-        const suscripcionesDistinct = [...new Set(suscripciones.map(item => item.auth))];
+        const suscripcionesDistinct = Array.from(new Set(suscripciones.map(item => item.endpoint)))
+            .map(endpoint => {
+                return suscripciones.find(item => item.endpoint === endpoint);
+            });
+
         suscripcionesDistinct.forEach((suscripcion, i) => {
             const pushProm = webpush.sendNotification(suscripcion, JSON.stringify(post))
                 .then(console.log(`Notificacion enviada`))
@@ -92,7 +96,6 @@ module.exports.sendPush = (post) => {
                 });
             // notificacionesEnviadas.push(pushProm);
         });
-
 
         // IMPLEMENTACION VIEJA, BORRA DEL ARCHIVO LAS QUE NO PUEDE ENTREGAR
         //
