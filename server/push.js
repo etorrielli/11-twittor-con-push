@@ -80,30 +80,42 @@ module.exports.sendPush = (post) => {
 
                     console.log(`Notificacion fallo`);
                 });
-            notificacionesEnviadas.push(pushProm);
+            // notificacionesEnviadas.push(pushProm);
         });
     } else {
-        // falta controlar de enviar una sola notif al dispositivo, por mas que tenga mas de una suscripcion para el mismo
-        suscripciones.forEach((suscripcion, i) => {
+        const suscripcionesDistinct = [...new Set(suscripciones.map(item => item.auth))];
+        suscripcionesDistinct.forEach((suscripcion, i) => {
             const pushProm = webpush.sendNotification(suscripcion, JSON.stringify(post))
                 .then(console.log(`Notificacion enviada`))
                 .catch(err => {
-
                     console.log(`Notificacion fallo`);
-                    if (err.statusCode === 410) {
-                        // ya no existe
-                        suscripciones[i].borrar = true;
-                    }
                 });
-            notificacionesEnviadas.push(pushProm);
+            // notificacionesEnviadas.push(pushProm);
         });
+
+
+        // IMPLEMENTACION VIEJA, BORRA DEL ARCHIVO LAS QUE NO PUEDE ENTREGAR
+        //
+        //     suscripciones.forEach((suscripcion, i) => {
+        //         const pushProm = webpush.sendNotification(suscripcion, JSON.stringify(post))
+        //             .then(console.log(`Notificacion enviada`))
+        //             .catch(err => {
+        //
+        //                 console.log(`Notificacion fallo`);
+        //                 if (err.statusCode === 410) {
+        //                     // ya no existe
+        //                     suscripciones[i].borrar = true;
+        //                 }
+        //             });
+        //         notificacionesEnviadas.push(pushProm);
+        //     });
+        // }
+
+        // Promise.all(notificacionesEnviadas).then(() => {
+        //
+        //     suscripciones = suscripciones.filter(subs => !subs.borrar);
+        //     fs.writeFileSync(`${ __dirname }/subs-db.json`, JSON.stringify(suscripciones));
+        //
+        // });
     }
-
-    Promise.all(notificacionesEnviadas).then(() => {
-
-        suscripciones = suscripciones.filter(subs => !subs.borrar);
-        fs.writeFileSync(`${ __dirname }/subs-db.json`, JSON.stringify(suscripciones));
-
-    });
 }
-;
